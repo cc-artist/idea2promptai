@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后端管理系统 - 仪表盘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 1.5rem;
+        }
+        
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .api-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .api-section h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .api-endpoint {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .api-method {
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 1rem;
+        }
+        
+        .api-url {
+            color: #333;
+        }
+        
+        .status-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-section h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .status-item {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-label {
+            color: #666;
+        }
+        
+        .status-value {
+            font-weight: bold;
+        }
+        
+        .status-ok {
+            color: #2ecc71;
+        }
+        
+        .status-error {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>后端管理系统 - 仪表盘</h1>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+    </header>
+    
+    <div class="container">
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalRequests">0</div>
+                <div class="stat-label">总请求数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="activeUsers">0</div>
+                <div class="stat-label">活跃用户</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="successRate">0%</div>
+                <div class="stat-label">请求成功率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="responseTime">0ms</div>
+                <div class="stat-label">平均响应时间</div>
+            </div>
+        </div>
+        
+        <!-- API 端点列表 -->
+        <div class="api-section">
+            <h2>API 端点</h2>
+            <div class="api-endpoint">
+                <span class="api-method">GET</span>
+                <span class="api-url">/api/config</span>
+                <br>
+                <small>获取系统配置信息</small>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method">POST</span>
+                <span class="api-url">/api/reverse-prompt</span>
+                <br>
+                <small>生成反向提示词</small>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method">POST</span>
+                <span class="api-url">/api/generate</span>
+                <br>
+                <small>基于提示词生成内容</small>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method">GET</span>
+                <span class="api-url">/api/billing</span>
+                <br>
+                <small>获取账单信息</small>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method">GET</span>
+                <span class="api-url">/health</span>
+                <br>
+                <small>健康检查</small>
+            </div>
+        </div>
+        
+        <!-- 系统状态 -->
+        <div class="status-section">
+            <h2>系统状态</h2>
+            <div class="status-item">
+                <span class="status-label">后端服务</span>
+                <span class="status-value status-ok" id="backendStatus">运行正常 ✅</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">API 状态</span>
+                <span class="status-value status-ok" id="apiStatus">可用 ✅</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">数据库连接</span>
+                <span class="status-value status-error" id="dbStatus">未配置 ⚠️</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">服务版本</span>
+                <span class="status-value">1.0.0</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">运行时间</span>
+                <span class="status-value" id="uptime">0天 0小时 0分钟</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 初始化系统状态
+        function init() {
+            checkBackendStatus();
+            updateStats();
+            startUptimeCounter();
+        }
+        
+        // 检查后端状态
+        function checkBackendStatus() {
+            fetch('http://localhost:3001/health')
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('backendStatus').textContent = '运行正常 ✅';
+                        document.getElementById('backendStatus').className = 'status-value status-ok';
+                        document.getElementById('apiStatus').textContent = '可用 ✅';
+                        document.getElementById('apiStatus').className = 'status-value status-ok';
+                    } else {
+                        document.getElementById('backendStatus').textContent = '服务异常 ❌';
+                        document.getElementById('backendStatus').className = 'status-value status-error';
+                        document.getElementById('apiStatus').textContent = '不可用 ❌';
+                        document.getElementById('apiStatus').className = 'status-value status-error';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('backendStatus').textContent = '无法连接 ❌';
+                    document.getElementById('backendStatus').className = 'status-value status-error';
+                    document.getElementById('apiStatus').textContent = '不可用 ❌';
+                    document.getElementById('apiStatus').className = 'status-value status-error';
+                });
+        }
+        
+        // 更新统计数据（从后端API获取）
+        function updateStats() {
+            // 从后端API获取真实统计数据
+            fetch('http://localhost:3001/api/stats')
+                .then(response => response.json())
+                .then(data => {
+                    // 更新统计卡片
+                    document.getElementById('totalRequests').textContent = data.totalRequests.toLocaleString();
+                    document.getElementById('activeUsers').textContent = data.activeUsers;
+                    document.getElementById('successRate').textContent = `${data.successRate}%`;
+                    document.getElementById('responseTime').textContent = `${data.responseTime}ms`;
+                })
+                .catch(error => {
+                    console.error('获取统计数据失败:', error);
+                    // 出错时显示默认值或错误信息
+                    document.getElementById('totalRequests').textContent = 'N/A';
+                    document.getElementById('activeUsers').textContent = 'N/A';
+                    document.getElementById('successRate').textContent = 'N/A';
+                    document.getElementById('responseTime').textContent = 'N/A';
+                });
+        }
+        
+        // 启动运行时间计数器
+        let startTime = Date.now();
+        function startUptimeCounter() {
+            setInterval(() => {
+                const uptime = Date.now() - startTime;
+                const days = Math.floor(uptime / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((uptime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById('uptime').textContent = `${days}天 ${hours}小时 ${minutes}分钟`;
+            }, 60000); // 每分钟更新一次
+        }
+        
+        // 退出登录
+        function logout() {
+            window.location.href = 'admin.html';
+        }
+        
+        // 页面加载时初始化
+        window.onload = init;
+        
+        // 每5秒检查一次后端状态
+        setInterval(checkBackendStatus, 5000);
+        // 每10秒更新一次统计数据
+        setInterval(updateStats, 10000);
+    </script>
+</body>
+</html>

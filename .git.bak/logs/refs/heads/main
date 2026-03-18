@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 db6bcc117e0600aa02abce5d5eed41e46b7680d7 GitHub User <user@example.com> 1773827023 +0800	branch: Created from HEAD
+db6bcc117e0600aa02abce5d5eed41e46b7680d7 8a22ca5743ce31433177edc0f814b68f0f1f3f43 GitHub User <user@example.com> 1773827858 +0800	commit: 简化vercel.json配置，移除builds配置以解决部署警告
+8a22ca5743ce31433177edc0f814b68f0f1f3f43 8a22ca5743ce31433177edc0f814b68f0f1f3f43 GitHub User <user@example.com> 1773828445 +0800	Branch: renamed refs/heads/main to refs/heads/main
+8a22ca5743ce31433177edc0f814b68f0f1f3f43 8a22ca5743ce31433177edc0f814b68f0f1f3f43 GitHub User <user@example.com> 1773830419 +0800	Branch: renamed refs/heads/main to refs/heads/main
+8a22ca5743ce31433177edc0f814b68f0f1f3f43 8a22ca5743ce31433177edc0f814b68f0f1f3f43 GitHub User <user@example.com> 1773836834 +0800	Branch: renamed refs/heads/main to refs/heads/main

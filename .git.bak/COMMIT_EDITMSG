@@ -1,0 +1,1 @@
+简化vercel.json配置，移除builds配置以解决部署警告
