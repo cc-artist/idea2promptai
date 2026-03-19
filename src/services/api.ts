@@ -2,8 +2,9 @@
 
 import { mockImageReverseResult, mockTextReverseResult, mockVideoReverseResult, mockGenerateResult, mockBillingInfo } from './mock-data';
 
-// 使用新创建的后端API地址
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+// 使用相对路径或环境变量配置API地址
+// 在Vercel上，前端和后端会在同一个域名下，使用相对路径即可
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 // 是否使用模拟数据
 const USE_MOCK_DATA = false; // 生产环境应设为false，使用真实API
